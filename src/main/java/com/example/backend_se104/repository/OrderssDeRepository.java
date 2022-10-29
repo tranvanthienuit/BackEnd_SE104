@@ -12,9 +12,9 @@ import java.util.List;
 
 @Repository
 public interface OrderssDeRepository extends JpaRepository<OrderssDetail, String> {
-    @Query("select new spring.Entity.book_category(sum(u.count),u.book.category.nameCate) from OrderssDetail u group by u.book.category.nameCate")
+    @Query("select new com.example.backend_se104.entity.book_category(sum(u.count),u.book.category.nameCate) from OrderssDetail u group by u.book.category.nameCate")
     List<book_category> getBookAndCategory();
 
-    @Query("select new spring.Entity.month_price(month(u.orderss.orderssDate),sum(u.total)) from OrderssDetail u group by month(u.orderss.orderssDate)")
+    @Query("select new com.example.backend_se104.entity.month_price(month(u.orderss.orderssDate),sum(u.total)) from OrderssDetail u group by month(u.orderss.orderssDate)")
     List<month_price> getPriceAndMonth();
 }

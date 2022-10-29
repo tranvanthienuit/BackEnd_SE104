@@ -1,15 +1,15 @@
 package spring.Controller.Admin;
 
+import com.example.backend_se104.entity.model.Blog;
+import com.example.backend_se104.entity.model.User;
+import com.example.backend_se104.security.userDetail;
+import com.example.backend_se104.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import spring.Entity.Model.Blog;
-import spring.Entity.Model.User;
-import spring.Sercurity.userDetail;
 import spring.Service.BlogService;
-import spring.Service.UserService;
 
 import java.time.LocalDate;
 import java.util.List;

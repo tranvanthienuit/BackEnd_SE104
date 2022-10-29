@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     User findUserByUserId(String userId);
 
-    @Query("select new spring.Entity.month_user(month(u.dayAdd),count(u.userId)) from User u group by month(u.dayAdd)")
+    @Query("select new com.example.backend_se104.entity.month_user(month(u.dayAdd),count(u.userId)) from User u group by month(u.dayAdd)")
     List<month_user> getUserAndMonnth();
 
 }

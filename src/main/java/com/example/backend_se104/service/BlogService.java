@@ -1,8 +1,8 @@
 package spring.Service;
 
+import com.example.backend_se104.entity.model.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spring.Entity.Model.Blog;
 import spring.Repository.BlogRepository;
 
 import java.util.List;
