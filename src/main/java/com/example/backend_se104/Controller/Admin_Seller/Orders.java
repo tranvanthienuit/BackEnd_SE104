@@ -1,28 +1,29 @@
-package com.example.backend_se104.Controller.Admin_Seller;
+package spring.Controller.Admin_Seller;
 
-
-
-import com.example.backend_se104.service.OrderssDeSevice;
-import com.example.backend_se104.service.OrderssSevice;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.Entity.OrderssList;
+import spring.Service.BookService;
+import spring.Service.OrderssDeSevice;
+import spring.Service.OrderssSevice;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = {"/api/seller/order", "/api/admin/order"})
+@RequestMapping(value = {"/api/seller/order","/api/admin/order"})
 public class Orders {
     @Autowired
     OrderssSevice orderssSevice;
     @Autowired
     OrderssDeSevice orderssDeSevice;
     @Autowired
-    spring.Service.BookService bookService;
+    BookService bookService;
 
     @GetMapping(value = {"page/{number}"})
     public ResponseEntity<OrderssList> getAllOrderss(
@@ -54,7 +55,7 @@ public class Orders {
     }
 
     @PostMapping(value = {"/search"})
-    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@RequestBody Map<String, Object> keysearch) {
+    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@RequestBody Map<String,Object> keysearch) {
         if (keysearch == null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

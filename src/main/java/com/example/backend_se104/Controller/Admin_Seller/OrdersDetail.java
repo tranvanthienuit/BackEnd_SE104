@@ -1,9 +1,5 @@
-package com.example.backend_se104.Controller.Admin_Seller;
+package spring.Controller.Admin_Seller;
 
-import com.example.backend_se104.entity.model.Orderss;
-import com.example.backend_se104.entity.model.OrderssDetail;
-import com.example.backend_se104.service.OrderssDeSevice;
-import com.example.backend_se104.service.OrderssSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,13 +7,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import spring.Entity.Model.Orderss;
+import spring.Entity.OrderssDelist;
+import spring.Entity.Model.OrderssDetail;
 import spring.Service.BookService;
+import spring.Service.OrderssDeSevice;
+import spring.Service.OrderssSevice;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = {"/api/seller/order-detail", "/api/admin/order-detail"})
+@RequestMapping(value = {"/api/seller/order-detail","/api/admin/order-detail"})
 public class OrdersDetail {
     @Autowired
     OrderssDeSevice orderssDeSevice;
@@ -55,7 +56,7 @@ public class OrdersDetail {
         }
     }
 
-    @GetMapping(value = {"search/{userName}"})
+    @GetMapping(value = { "search/{userName}"})
     public ResponseEntity<List<OrderssDetail>> findOrderssDe(@PathVariable(name = "userName", required = false) String userName) {
         if (userName == null) {
             return new ResponseEntity<>(HttpStatus.OK);
