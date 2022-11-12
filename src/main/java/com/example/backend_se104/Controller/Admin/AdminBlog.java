@@ -23,7 +23,7 @@ public class AdminBlog {
     @PostMapping("/admin/them-blog")
     public ResponseEntity<?> saveBlog(@RequestBody Blog blog) throws Exception {
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.findUserByUserId(user1.getUserId());a
+        User user = userService.findUserByUserId(user1.getUserId());avfv
         blog.setUser(user);
         LocalDate ldate = LocalDate.now();
         java.sql.Date date = java.sql.Date.valueOf(ldate);
