@@ -1,37 +1,39 @@
 package com.example.backend_se104.Controller.Admin;
 
-
-import com.example.backend_se104.service.CategoryService;
+import com.example.backend_se104.Entity.Model.Category;
+import com.example.backend_se104.Service.BookService;
+import com.example.backend_se104.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
+@RequestMapping("/api/admin/category")
 public class AdminCategory {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    spring.Service.BookService bookService;
+    BookService bookService;
 
-    @PostMapping(value = "/admin/luu-loai-sach")
+    @PostMapping(value = "/create")
     public ResponseEntity<String> saveCategory(@RequestBody Category category) throws Exception {
         categoryService.saveCategory(category);
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = {"/admin/xoa-loai-sach/{categoryId}", "/admin/xoa-loai-sach"})
-    public ResponseEntity<String> removeCategory(
-            @PathVariable(value = "categoryId", required = false) String categoryId) throws Exception {
+    @DeleteMapping(value = {"/delete/{id}"})
+    public ResponseEntity<String> removeCategory(@PathVariable(value = "id", required = false) String categoryId) throws Exception {
         if (categoryService.findByCategoryId(categoryId) != null) {
-            // bookService.removeBookByCategory(categoryId);
+//            bookService.removeBookByCategory(categoryId);
             categoryService.removeByCategoryId(categoryId);
             return new ResponseEntity<>("successful", HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/admin/sua-loai-sach")
+    @PostMapping("/update")
     public ResponseEntity<?> editeCategory(@RequestBody Category category) {
         Category categories = categoryService.findByCategoryId(category.getCategoryId());
         categories.setNameCate(category.getNameCate());

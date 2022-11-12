@@ -1,9 +1,9 @@
 package com.example.backend_se104.Controller.Admin;
 
-import com.example.backend_se104.entity.model.Role;
-import com.example.backend_se104.entity.model.User;
-import com.example.backend_se104.service.RoleService;
-import com.example.backend_se104.service.UserService;
+import com.example.backend_se104.Entity.Model.Role;
+import com.example.backend_se104.Entity.Model.User;
+import com.example.backend_se104.Service.RoleService;
+import com.example.backend_se104.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ public class AdminUser {
     RoleService roleService;
 
 
-    @PostMapping(value = {"/admin/{userId}"})
-    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody Map<String, Object> roleName) {
+    @PostMapping(value = {"/api/admin/{id}"})
+    public ResponseEntity<?> editeRole(@PathVariable("id") String userId, @RequestBody Map<String, Object> roleName) {
         User user = userService.findUserByUserId(userId);
 
         Role role = roleService.findRoleByName(roleName.get("roleName").toString());

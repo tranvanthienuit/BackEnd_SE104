@@ -1,9 +1,9 @@
 package com.example.backend_se104.Controller.Admin;
 
-import com.example.backend_se104.entity.*;
-import com.example.backend_se104.service.OrderssDeSevice;
-import com.example.backend_se104.service.OrderssSevice;
-import com.example.backend_se104.service.UserService;
+import com.example.backend_se104.Entity.*;
+import com.example.backend_se104.Service.OrderssDeSevice;
+import com.example.backend_se104.Service.OrderssSevice;
+import com.example.backend_se104.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class AdminChart {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "/admin/chart")
+    @GetMapping(value = "/api/admin/chart")
     public ResponseEntity<?> chart() {
         List<month_book> bookAndMonth = orderssSevice.getBookAndMonth();
         if (orderssSevice.getBookAndMonth() == null || orderssSevice.getBookAndMonth().isEmpty()) {

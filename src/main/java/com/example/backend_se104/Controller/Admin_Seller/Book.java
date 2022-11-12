@@ -1,6 +1,9 @@
 package com.example.backend_se104.Controller.Admin_Seller;
 
-import com.example.backend_se104.entity.BookList;
+
+import com.example.backend_se104.Entity.BookList;
+import com.example.backend_se104.Service.BookService;
+import com.example.backend_se104.Service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,11 +19,11 @@ import java.util.List;
 @RestController
 public class Book {
     @Autowired
-    spring.Service.BookService booksService;
+    BookService booksService;
     @Autowired
-    spring.Service.CategoryService categoryService;
+    CategoryService categoryService;
 
-    @GetMapping(value = {"/api/seller/page/{number}", "/api/seller/page", "/api/admin/page/{number}", "/api/admin/page"})
+    @GetMapping(value = {"api/seller/page/{number}", "api/admin/page/{number}"})
     public ResponseEntity<BookList> getAllBook(
             @PathVariable(name = "number", required = false) Integer page) throws Exception {
         BookList bookList = new BookList();
@@ -28,8 +31,8 @@ public class Book {
             page = 0;
         }
         Pageable pageable = PageRequest.of(page, 12);
-        Page<com.example.backend_se104.entity.model.Book> bookPage = booksService.getAllBookByAdmin(pageable);
-        List<com.example.backend_se104.entity.model.Book> bookPageContent = bookPage.getContent();
+        Page<com.example.backend_se104.Entity.Model.Book> bookPage = booksService.getAllBookByAdmin(pageable);
+        List<com.example.backend_se104.Entity.Model.Book> bookPageContent = bookPage.getContent();
         if (bookPageContent.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

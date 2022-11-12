@@ -1,11 +1,13 @@
 package com.example.backend_se104.Controller.User;
 
 
-
-import com.example.backend_se104.entity.model.Book;
-import com.example.backend_se104.entity.model.User;
-import com.example.backend_se104.security.userDetail;
-import com.example.backend_se104.service.UserService;
+import com.example.backend_se104.Entity.Model.Book;
+import com.example.backend_se104.Entity.Model.Comment;
+import com.example.backend_se104.Entity.Model.User;
+import com.example.backend_se104.Sercurity.userDetail;
+import com.example.backend_se104.Service.BookService;
+import com.example.backend_se104.Service.CommentService;
+import com.example.backend_se104.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class UserComment {
     @Autowired
     UserService userService;
     @Autowired
-    spring.Service.BookService bookService;
+    BookService bookService;
 
     @PostMapping("create/{bookId}")
     public ResponseEntity<?> saveComment(@PathVariable(name = "bookId") String bookId, @RequestBody Comment comment) {

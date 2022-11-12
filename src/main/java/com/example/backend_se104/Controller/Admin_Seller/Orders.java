@@ -1,5 +1,11 @@
-package spring.Controller.Admin_Seller;
+package com.example.backend_se104.Controller.Admin_Seller;
 
+
+import com.example.backend_se104.Entity.Model.Orderss;
+import com.example.backend_se104.Entity.OrderssList;
+import com.example.backend_se104.Service.BookService;
+import com.example.backend_se104.Service.OrderssDeSevice;
+import com.example.backend_se104.Service.OrderssSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,16 +13,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spring.Entity.OrderssList;
-import spring.Service.BookService;
-import spring.Service.OrderssDeSevice;
-import spring.Service.OrderssSevice;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = {"/api/seller/order","/api/admin/order"})
+@RequestMapping(value = {"/api/seller/order", "/api/admin/order"})
 public class Orders {
     @Autowired
     OrderssSevice orderssSevice;
@@ -33,8 +35,8 @@ public class Orders {
             page = 0;
         }
         Pageable pageable = PageRequest.of(page, 12);
-        Page<spring.Entity.Model.Orderss> OrderssPage = orderssSevice.getAllOrderss(pageable);
-        List<spring.Entity.Model.Orderss> orderssPageContent = OrderssPage.getContent();
+        Page<Orderss> OrderssPage = orderssSevice.getAllOrderss(pageable);
+        List<Orderss> orderssPageContent = OrderssPage.getContent();
         if (orderssPageContent.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -46,7 +48,7 @@ public class Orders {
 
     @DeleteMapping(value = {"delete/{id}"})
     public ResponseEntity<String> removeOrderss(@PathVariable(value = "id", required = false) String OrderssId) throws Exception {
-        spring.Entity.Model.Orderss orderss = orderssSevice.findByOrderssId(OrderssId);
+        Orderss orderss = orderssSevice.findByOrderssId(OrderssId);
         if (orderss != null) {
             orderssSevice.removeByOrderssId(orderss.getOrderssId());
             return new ResponseEntity<>("successful", HttpStatus.OK);
@@ -55,18 +57,18 @@ public class Orders {
     }
 
     @PostMapping(value = {"/search"})
-    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@RequestBody Map<String,Object> keysearch) {
+    public ResponseEntity<List<Orderss>> findOrderss(@RequestBody Map<String, Object> keysearch) {
         if (keysearch == null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            List<spring.Entity.Model.Orderss> orderssList = orderssSevice.findOrder(keysearch.get("keysearch").toString());
+            List<Orderss> orderssList = orderssSevice.findOrder(keysearch.get("keysearch").toString());
             return new ResponseEntity<>(orderssList, HttpStatus.OK);
         }
     }
 
     @PostMapping(value = {"/seller/sua-orderss", "/admin/sua-orderss"})
-    public ResponseEntity<?> editeStatus(@RequestBody spring.Entity.Model.Orderss orderss) {
-        spring.Entity.Model.Orderss orderss1 = orderssSevice.findByOrderssId(orderss.getOrderssId());
+    public ResponseEntity<?> editeStatus(@RequestBody Orderss orderss) {
+        Orderss orderss1 = orderssSevice.findByOrderssId(orderss.getOrderssId());
         orderss1.setTelephone(orderss.getTelephone());
         orderss1.setAddress(orderss.getAddress());
         orderss1.setStatus(orderss.getStatus());
