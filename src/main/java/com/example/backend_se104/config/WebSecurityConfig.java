@@ -1,7 +1,6 @@
 package com.example.backend_se104.config;
 
 import com.example.backend_se104.jwt.JwtAuthenticationFilter;
-import com.example.backend_se104.security.userServiceDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

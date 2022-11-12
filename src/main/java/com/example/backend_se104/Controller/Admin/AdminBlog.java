@@ -1,4 +1,4 @@
-package spring.Controller.Admin;
+package com.example.backend_se104.Controller.Admin;
 
 import com.example.backend_se104.entity.model.Blog;
 import com.example.backend_se104.entity.model.User;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import spring.Service.BlogService;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 public class AdminBlog {

@@ -42,12 +42,12 @@ public interface BookRepository extends JpaRepository<Book, String> {
 
     @Query("select u from Book u where u.author like %:tacgia% and u.price>=:giathap and u.price<=:giacao and u.publishYear like %:namsb% and u.category.categoryId like %:loai%")
     List<Book> findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
-            @Param("giacao") Integer giacao, @Param("namsb") String namsb, @Param("loai") String loai,
-            Pageable pageable);
+                                   @Param("giacao") Integer giacao, @Param("namsb") String namsb, @Param("loai") String loai,
+                                   Pageable pageable);
 
     @Query("select count (u) from Book u where u.author like %:tacgia% and u.price>=:giathap and u.price<=:giacao and u.publishYear like %:namsb% and u.category.categoryId like %:loai%")
     Integer findBookByCondition(@Param("tacgia") String tacgia, @Param(("giathap")) Integer giathap,
-            @Param("giacao") Integer giacao, @Param("namsb") String namsb, @Param("loai") String loai);
+                                @Param("giacao") Integer giacao, @Param("namsb") String namsb, @Param("loai") String loai);
 
     @Query("select u from Book u where u.category.categoryId=:categoryId")
     List<Book> findBooksByCategoryId(@Param("categoryId") String categoryId);

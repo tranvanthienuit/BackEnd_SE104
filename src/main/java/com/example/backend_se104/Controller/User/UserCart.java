@@ -1,20 +1,25 @@
 package com.example.backend_se104.Controller.User;
 
+
+
+import com.example.backend_se104.entity.model.Book;
+import com.example.backend_se104.entity.model.Orderss;
+import com.example.backend_se104.entity.model.OrderssDetail;
+import com.example.backend_se104.entity.model.Role;
+import com.example.backend_se104.security.userDetail;
+import com.example.backend_se104.service.OrderssDeSevice;
+import com.example.backend_se104.service.OrderssSevice;
+import com.example.backend_se104.service.RoleService;
+import com.example.backend_se104.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import spring.Entity.*;
-import spring.Entity.Model.*;
-import spring.Repository.MailService;
-import spring.Sercurity.userDetail;
-import spring.Service.*;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -24,7 +29,7 @@ import java.util.Objects;
 @RestController
 public class UserCart {
     @Autowired
-    BookService bookService;
+    spring.Service.BookService bookService;
     @Autowired
     OrderssSevice orderssSevice;
     @Autowired
@@ -85,7 +90,7 @@ public class UserCart {
                     }
                 }
             }
-            sendEmail sendEmail = new sendEmail(cart,user,totalPrice,totalBook);
+            sendEmail sendEmail = new sendEmail(cart, user, totalPrice, totalBook);
             Thread thread = new Thread(sendEmail);
             thread.start();
 
@@ -108,9 +113,10 @@ public class UserCart {
 
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
+
     @Data
     @AllArgsConstructor
-    private class sendEmail implements Runnable{
+    private class sendEmail implements Runnable {
         private List<CartBook> cart;
         private User user;
         private Double totalPrice;
@@ -181,7 +187,7 @@ public class UserCart {
                         "</table>" + "</br><h3>TỔNG GIÁ TIỀN CỦA BẠN LÀ : " + totalPrice + "</h3></br><h3>TỔNG SỐ SÁCH BẠN ĐÃ MUA : " + totalBook + "</h3>";
                 mail.setMailContent(html);
                 mailService.sendEmail(mail);
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Exception is caught");
             }
         }

@@ -3,14 +3,13 @@ package spring.Service;
 import com.example.backend_se104.entity.model.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import spring.Repository.BlogRepository;
 
 import java.util.List;
 
 @Service
 public class BlogService {
     @Autowired
-    BlogRepository blogRepository;
+    spring.Repository.BlogRepository blogRepository;
 
     public void saveBlog(Blog blog) {
         blogRepository.save(blog);

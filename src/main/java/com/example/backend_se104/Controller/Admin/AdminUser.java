@@ -23,7 +23,7 @@ public class AdminUser {
 
 
     @PostMapping(value = {"/admin/{userId}"})
-    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody Map<String,Object> roleName) {
+    public ResponseEntity<?> editeRole(@PathVariable("userId") String userId, @RequestBody Map<String, Object> roleName) {
         User user = userService.findUserByUserId(userId);
 
         Role role = roleService.findRoleByName(roleName.get("roleName").toString());

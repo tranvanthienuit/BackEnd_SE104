@@ -1,17 +1,13 @@
-package spring.Controller.Admin;
+package com.example.backend_se104.Controller.Admin;
 
-import com.sun.mail.imap.protocol.BODY;
+
+
+import com.example.backend_se104.entity.model.Book;
+import com.example.backend_se104.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spring.Entity.Model.Book;
-import spring.Entity.BookList;
-import spring.Service.BookService;
-import spring.Service.CategoryService;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,7 +15,7 @@ import java.util.List;
 @RestController
 public class AdminBook {
     @Autowired
-    BookService booksService;
+    spring.Service.BookService booksService;
     @Autowired
     CategoryService categoryService;
 
@@ -39,7 +35,7 @@ public class AdminBook {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = { "/admin/xoa-sach/{bookId}", "/admin/xoa-sach" })
+    @DeleteMapping(value = {"/admin/xoa-sach/{bookId}", "/admin/xoa-sach"})
     public ResponseEntity<String> removeBook(@PathVariable(value = "bookId", required = false) String bookId)
             throws Exception {
         if (booksService.findBookByBookId(bookId) != null) {
@@ -49,7 +45,7 @@ public class AdminBook {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = { "/admin/sua-sach/{idBook}" })
+    @PostMapping(value = {"/admin/sua-sach/{idBook}"})
     public ResponseEntity<Book> editBook(@RequestBody Book book) {
         Book newBook = booksService.findBookByBookId(book.getBookId());
         if (book.getNameBook() != null) {

@@ -20,7 +20,7 @@ public class Book {
     @Autowired
     spring.Service.CategoryService categoryService;
 
-    @GetMapping(value = {"/api/seller/page/{number}", "/api/seller/page","/api/admin/page/{number}", "/api/admin/page"})
+    @GetMapping(value = {"/api/seller/page/{number}", "/api/seller/page", "/api/admin/page/{number}", "/api/admin/page"})
     public ResponseEntity<BookList> getAllBook(
             @PathVariable(name = "number", required = false) Integer page) throws Exception {
         BookList bookList = new BookList();

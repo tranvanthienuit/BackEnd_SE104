@@ -75,7 +75,7 @@ public class UserController {
     }
 
     @PostMapping(value = {"update/avatar"})
-    public ResponseEntity<User> editImg(@RequestBody Map<String,Object> image) throws Exception {
+    public ResponseEntity<User> editImg(@RequestBody Map<String, Object> image) throws Exception {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
         user.setImage(image.get("image").toString());
@@ -85,7 +85,7 @@ public class UserController {
     }
 
     @PostMapping(value = {"update/password"})
-    public ResponseEntity<?> editPassword(@RequestBody Map<String,Object> password) {
+    public ResponseEntity<?> editPassword(@RequestBody Map<String, Object> password) {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
         if (passwordEncoder.matches(password.get("oldPassword").toString(), user.getPassword())) {
@@ -120,7 +120,7 @@ public class UserController {
                     "<h2>Xin chào quý khách mật khẩu của bạn đang được reset.</br>\n" +
                     "\tHãy nhấp vào link dưới đây để cài đặt mật khẩu lại. Cảm ơn quý khách\n</h2>\n" +
 //                    "<h3>Link: </h3>" + "<a href=https://uitbook.netlify.app/cai-dat-mat-khau-moi/"+Email+"/" + token + ">" + email + "</a>");
-            "<h3>Link: </h3>" + "<a href=http://localhost:3000/cai-dat-mat-khau-moi/"+Email+"/" + token + ">" + email + "</a>");
+                    "<h3>Link: </h3>" + "<a href=http://localhost:3000/cai-dat-mat-khau-moi/" + Email + "/" + token + ">" + email + "</a>");
 
             mailService.sendEmail(mail);
             return new ResponseEntity<>("successful", HttpStatus.OK);
@@ -129,12 +129,12 @@ public class UserController {
     }
 
     @PostMapping(value = {"reset/password/{token}"})
-    public ResponseEntity<?> setPassword(@PathVariable("token")String token, @RequestBody Map<String,Object> emailAndPass) {
-        if (jwtTokenProvider.validateToken(token)){
-            userService.setPassword(passwordEncoder.encode(emailAndPass.get("password").toString()),emailAndPass.get("email").toString());
+    public ResponseEntity<?> setPassword(@PathVariable("token") String token, @RequestBody Map<String, Object> emailAndPass) {
+        if (jwtTokenProvider.validateToken(token)) {
+            userService.setPassword(passwordEncoder.encode(emailAndPass.get("password").toString()), emailAndPass.get("email").toString());
             return new ResponseEntity<>("successful", HttpStatus.OK);
         }
-        return new ResponseEntity<>("error",HttpStatus.OK);
+        return new ResponseEntity<>("error", HttpStatus.OK);
     }
 
     @GetMapping(value = {"profile"})
@@ -146,28 +146,31 @@ public class UserController {
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
+
     @GetMapping("user/{email}")
-    public ResponseEntity<?> getUserByEmail(@PathVariable(name = "email")String email){
-        if (email!=null)
-            return new ResponseEntity<>(userService.findUser(email),HttpStatus.OK);
+    public ResponseEntity<?> getUserByEmail(@PathVariable(name = "email") String email) {
+        if (email != null)
+            return new ResponseEntity<>(userService.findUser(email), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @PostMapping(value = {"order"})
-    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@RequestBody Map<String,Object> keysearch) {
-        if (orderssSevice.findOrder(keysearch.get("keysearch").toString()).size()==0) {
+    public ResponseEntity<List<spring.Entity.Model.Orderss>> findOrderss(@RequestBody Map<String, Object> keysearch) {
+        if (orderssSevice.findOrder(keysearch.get("keysearch").toString()).size() == 0) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             List<spring.Entity.Model.Orderss> orderssList = orderssSevice.findOrder(keysearch.get("keysearch").toString());
             return new ResponseEntity<>(orderssList, HttpStatus.OK);
         }
     }
+
     @PostMapping(value = {"order-detail/{id}"})
-    public ResponseEntity<?> findOrderDe(@PathVariable("id")String orderDeId) {
-        if (orderDeId == null){
+    public ResponseEntity<?> findOrderDe(@PathVariable("id") String orderDeId) {
+        if (orderDeId == null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             List<OrderssDetail> orderssDetail = orderssDeSevice.findOrderssDe(orderDeId);
-            return new ResponseEntity<>(orderssDetail,HttpStatus.OK);
+            return new ResponseEntity<>(orderssDetail, HttpStatus.OK);
         }
     }
 }

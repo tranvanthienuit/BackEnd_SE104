@@ -1,19 +1,18 @@
-package spring.Controller.Admin;
+package com.example.backend_se104.Controller.Admin;
 
+
+import com.example.backend_se104.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import spring.Entity.Model.Category;
-import spring.Service.BookService;
-import spring.Service.CategoryService;
 
 @RestController
 public class AdminCategory {
     @Autowired
     CategoryService categoryService;
     @Autowired
-    BookService bookService;
+    spring.Service.BookService bookService;
 
     @PostMapping(value = "/admin/luu-loai-sach")
     public ResponseEntity<String> saveCategory(@RequestBody Category category) throws Exception {
@@ -21,7 +20,7 @@ public class AdminCategory {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @DeleteMapping(value = { "/admin/xoa-loai-sach/{categoryId}", "/admin/xoa-loai-sach" })
+    @DeleteMapping(value = {"/admin/xoa-loai-sach/{categoryId}", "/admin/xoa-loai-sach"})
     public ResponseEntity<String> removeCategory(
             @PathVariable(value = "categoryId", required = false) String categoryId) throws Exception {
         if (categoryService.findByCategoryId(categoryId) != null) {

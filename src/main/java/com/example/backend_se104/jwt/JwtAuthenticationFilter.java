@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-        @Autowired
-        UserService userService;
+    @Autowired
+    UserService userService;
     @Autowired
     JwtTokenProvider tokenProvider;
 
@@ -31,8 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 String userId = tokenProvider.getUserIdFromJWT(jwt);
                 User user = userService.findUserByUserId(userId);
                 if (user != null) {
-                //Phải chuyển user thành userdetails bằng userdetail implement userdetailservice
-                UserDetails userDetails = userDetail.createUserDetail(user);
+                    //Phải chuyển user thành userdetails bằng userdetail implement userdetailservice
+                    UserDetails userDetails = userDetail.createUserDetail(user);
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
