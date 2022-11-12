@@ -14,11 +14,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/user/comment")
+@Transactional
 public class UserComment {
     @Autowired
     CommentService commentService;
@@ -27,7 +28,7 @@ public class UserComment {
     @Autowired
     BookService bookService;
 
-    @PostMapping("create/{bookId}")
+    @PostMapping("/user/luu-comment/{bookId}")
     public ResponseEntity<?> saveComment(@PathVariable(name = "bookId") String bookId, @RequestBody Comment comment) {
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(user1.getUserId());
@@ -43,7 +44,7 @@ public class UserComment {
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
 
-    @PostMapping(value = "delete")
+    @PostMapping(value = "/user/xoa-comment")
     public ResponseEntity<?> deleteComment(@RequestBody Map<String, Object> comment) {
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(user1.getUserId());
@@ -54,13 +55,13 @@ public class UserComment {
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
 
-    @PostMapping("update/{id}")
-    public ResponseEntity<?> updateComment(@PathVariable(name = "id") String commentId, @RequestBody Map<String, Object> content) {
+    @PostMapping("/user/sua-comment/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable(name = "commentId") String commentId, @RequestBody Map<String, Object> content) {
         commentService.updateComment(commentId, content.get("content").toString());
         return new ResponseEntity<>("successfull", HttpStatus.OK);
     }
 
-    @GetMapping("book/{bookId}")
+    @GetMapping("/book/comment/{bookId}")
     public ResponseEntity<?> commentBook(@PathVariable(name = "bookId") String bookId) {
         return new ResponseEntity<>(commentService.findAllByBookId(bookId), HttpStatus.OK);
     }

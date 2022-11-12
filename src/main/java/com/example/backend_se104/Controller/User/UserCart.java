@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 @RestController
+@Transactional
 public class UserCart {
     @Autowired
     BookService bookService;
@@ -39,7 +41,7 @@ public class UserCart {
     @Autowired
     RoleService roleService;
 
-    @PostMapping(value = {"api/user/buy"})
+    @PostMapping(value = {"/user/mua-sach", "/mua-sach"})
     public ResponseEntity<List<CartBook>> Orderss(@RequestBody Cart objectCart) throws Exception {
         List<CartBook> cart = objectCart.getCartBooks();
 

@@ -11,10 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("api/admin/blog")
+@Transactional
 public class AdminBlog {
     @Autowired
     BlogService blogService;
@@ -22,7 +23,7 @@ public class AdminBlog {
     UserService userService;
 
 
-    @PostMapping("/create")
+    @PostMapping("/admin/them-blog")
     public ResponseEntity<?> saveBlog(@RequestBody Blog blog) throws Exception {
         userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(user1.getUserId());
@@ -34,14 +35,14 @@ public class AdminBlog {
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteBlog(@RequestBody @PathVariable(name = "id") String blogId) {
+    @DeleteMapping("/admin/xoa-blog/{blogId}")
+    public ResponseEntity<?> deleteBlog(@RequestBody @PathVariable(name = "blogId") String blogId) {
         blogService.findAndDeleteBlog(blogId);
         return new ResponseEntity<>("successful", HttpStatus.OK);
     }
 
 
-    @PostMapping("/update")
+    @PostMapping("/admin/sua-blog")
     public ResponseEntity<?> updateBlog(@RequestBody Blog blog) {
         Blog blog1 = blogService.findBlog(blog.getBlogId());
         if (blog.getContent() != null)

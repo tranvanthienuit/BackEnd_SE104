@@ -22,12 +22,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @RestController
-@RequestMapping(value = {"api/app"})
+@Transactional
 public class BookController {
     @Autowired
     BookService booksService;
@@ -38,7 +39,7 @@ public class BookController {
     @Autowired
     RatingService ratingService;
 
-    @PostMapping(value = {"search/book"})
+    @PostMapping(value = {"/tim-sach"})
     public ResponseEntity<List<Book>> findBook(@RequestBody Map<String, Object> infoBook) throws Exception {
         List<Book> books = booksService.searchBook(infoBook.get("infoBook").toString());
         if (infoBook.get("infoBook").toString() != null) {
@@ -50,8 +51,8 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = {"book/getDetail/{id}"})
-    public ResponseEntity<Book> productdetail(@PathVariable(value = "id", required = false) String bookId) throws Exception {
+    @GetMapping(value = {"/xem-chi-tiet-sach/{bookId}", "/xem-chi-tiet-sach"})
+    public ResponseEntity<Book> productdetail(@PathVariable(value = "bookId", required = false) String bookId) throws Exception {
         Book book = booksService.findBookByBookId(bookId);
         if (book != null) {
             return new ResponseEntity<>(book, HttpStatus.OK);
@@ -59,7 +60,7 @@ public class BookController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/new-book")
+    @GetMapping("/sach-moi")
     public ResponseEntity<List<Book>> findbyarrive() throws Exception {
         Pageable pageable = PageRequest.of(0, 12, Sort.by("dayAdd").descending());
         Page<Book> bookPage = booksService.getBookByDayAdd(pageable);
@@ -70,14 +71,14 @@ public class BookController {
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
-    @PostMapping(value = {"book/search"})
+    @PostMapping(value = {"/search/book"})
     public ResponseEntity<List<String>> searchByNameBook(@RequestBody Map<String, String> keywword) {
         List<String> searchString = booksService.searchAuto(keywword.get("keyword"));
         return new ResponseEntity<>(searchString, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"book/search/{categoryId}/{number}"})
-    public ResponseEntity<?> findBookByCategory(@PathVariable(name = "number", required = false) Integer page, @PathVariable(value = "categoryId", required = false) String categoryId) {
+    @GetMapping(value = {"/search/{categoryId}/{page}", "/search/{page}"})
+    public ResponseEntity<?> findBookByCategory(@PathVariable(name = "page", required = false) Integer page, @PathVariable(value = "categoryId", required = false) String categoryId) {
         if (page == null) {
             page = 0;
         }
@@ -89,9 +90,9 @@ public class BookController {
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
-    @PostMapping("/book/page/filter/{number}")
+    @PostMapping("/search/{page}")
     public ResponseEntity<?> findBookByCondition(@RequestBody Filter keyword,
-                                                 @PathVariable(name = "number", required = false) Integer page) {
+                                                 @PathVariable(name = "page", required = false) Integer page) {
         if (page == null)
             page = 0;
         Pageable pageable = null;
@@ -103,13 +104,13 @@ public class BookController {
         return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
 
-    @GetMapping("category/data-filter/{id}")
-    public ResponseEntity<?> findDataFilter(@PathVariable("id") String categoryId) {
+    @GetMapping("/data-filter/{categoryId}")
+    public ResponseEntity<?> findDataFilter(@PathVariable("categoryId") String categoryId) {
         return new ResponseEntity<>(booksService.dataFilters(categoryId), HttpStatus.OK);
     }
 
-    @PostMapping(value = {"book/appriciate/{id}/{star}"})
-    public ResponseEntity<?> appriciateBook(@PathVariable(value = "id", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
+    @PostMapping(value = {"/danh-gia-sach/{bookId}/{star}", "/danh-gia-sach"})
+    public ResponseEntity<?> appriciateBook(@PathVariable(value = "bookId", required = false) String bookId, @PathVariable(value = "star", required = false) int star) {
         Rating rating = new Rating();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (Objects.equals(authentication.getName(), "anonymousUser")) {

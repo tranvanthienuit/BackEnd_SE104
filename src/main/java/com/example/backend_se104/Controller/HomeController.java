@@ -19,11 +19,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/app")
+@Transactional
 public class HomeController {
     @Autowired
     BookService booksService;
@@ -50,9 +51,9 @@ public class HomeController {
     @Autowired
     BlogService blogService;
 
-    @GetMapping(value = {"/home/page/{number}"})
+    @GetMapping(value = {"/trang-chu/{page}", "/trang-chu"})
     public ResponseEntity<BookReturn> home(
-            @PathVariable(name = "number", required = false) Integer page) throws Exception {
+            @PathVariable(name = "page", required = false) Integer page) throws Exception {
         BookReturn bookReturn = new BookReturn();
 
 
@@ -86,9 +87,9 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = {"library/page/{number}"})
+    @GetMapping(value = {"/thu-vien/{page}", "/thu-vien"})
     public ResponseEntity<BookReturn> shop(
-            @PathVariable(name = "number", required = false) Integer page) throws Exception {
+            @PathVariable(name = "page", required = false) Integer page) throws Exception {
         BookReturn bookReturn = new BookReturn();
 
 
@@ -120,8 +121,8 @@ public class HomeController {
     }
 
 
-    @GetMapping(value = {"category/getDetail/{id}"})
-    public ResponseEntity<?> getCategoryBook(@RequestBody @PathVariable(value = "id", required = false) String CategoryId) throws Exception {
+    @GetMapping(value = {"/loai-sach/{CategoryId}", "/loai-sach"})
+    public ResponseEntity<?> getCategoryBook(@RequestBody @PathVariable(value = "CategoryId", required = false) String CategoryId) throws Exception {
         if (CategoryId == null) {
             return new ResponseEntity<>(categoryService.getAllCategory(), HttpStatus.OK);
         } else {
@@ -134,19 +135,41 @@ public class HomeController {
     }
 
 
-    @PostMapping("login")
+    @PostMapping("/dang-nhap")
     public LoginResponse getlogin(@RequestBody LoginReQuest loginReQuest) throws Exception {
         Authentication authentication = manager.authenticate(new UsernamePasswordAuthenticationToken(loginReQuest.getNameUser(),
                 loginReQuest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         userDetail user = (userDetail) authentication.getPrincipal();
         String accessToken = jwtTokenProvider.generateAccessToken(user.getUserId(), user.getUsername());
+//        Token token = new Token();
         String refreshToken = jwtTokenProvider.generateRefreshToken(user.getUserId(), user.getUsername());
+//        token.setTokenRefesh(refreshToken);
         User user1 = userService.findUserByUserId(user.getUserId());
+//        token.setUser(user1);
+//        tokenService.saveToken(token);
         return new LoginResponse(accessToken, refreshToken);
     }
 
-    @PostMapping("register")
+//    @GetMapping("/dang-xuat")
+//    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        userDetail user1 = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = userService.findUserByUserId(user1.getUserId());
+//        if (auth != null) {
+//            List<Token> tokenList = tokenService.getAllToken();
+//            for (Token token : tokenList) {
+//                if (token.getUser().getUserId().equals(user.getUserId())) {
+//                    tokenService.removeToken(token);
+//                    new SecurityContextLogoutHandler().logout(request, response, auth);
+//                    return new ResponseEntity<>("successful", HttpStatus.OK);
+//                }
+//            }
+//        }
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
+
+    @PostMapping("/dang-ky")
     public ResponseEntity<?> getregister(@RequestBody User user) throws Exception {
         String username;
         if (userService.findUserName(user.getNameUser()) == null) {
@@ -162,6 +185,7 @@ public class HomeController {
         if (role == null)
             role = roleService.findRoleByName("USER");
         user.setRole(role);
+//        user.setNameRole(role.getNameRole());
         LocalDate ldate = LocalDate.now();
         java.sql.Date date = java.sql.Date.valueOf(ldate);
         user.setDayAdd(date);
@@ -169,8 +193,26 @@ public class HomeController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+//    @PostMapping("/refresh")
+//    public ResponseEntity<?> refreshToken(HttpServletRequest request) {
+//        String jwt = getJwtFromRequest(request);
+//        Token token = new Token(jwt);
+//        List<Token> tokenList = tokenService.getAllToken();
+//        for (Token token1 : tokenList) {
+//            System.out.println(token.getTokenRefesh().equals(token1.getTokenRefesh()));
+//            if (token.getTokenRefesh().equals(token1.getTokenRefesh())) {
+//                String userId = tokenProvider.getUserIdFromJWT(jwt);
+//                User user = userService.findUserByUserId(userId);
+//                String accessToken = jwtTokenProvider.generateAccessToken(user.getUserId(), user.getNameUser());
+//                return ResponseEntity.ok(new LoginResponse(accessToken, token.getTokenRefesh()));
+//            }
+//        }
+//        return new ResponseEntity<>(HttpStatus.OK);
+//
+//    }
 
-    @GetMapping("category/list")
+
+    @GetMapping("/category")
     public ResponseEntity<CateList> getAllCategory() {
         CateList cateList = new CateList();
         cateList.setCategoryList(categoryService.getAllCategory());
@@ -178,7 +220,7 @@ public class HomeController {
         return new ResponseEntity<>(cateList, HttpStatus.OK);
     }
 
-    @GetMapping("blog/list")
+    @GetMapping("/xem-tat-ca-blog")
     public ResponseEntity<List<Blog>> findAllBlog() {
         return new ResponseEntity<>(blogService.findAllBlog(), HttpStatus.OK);
     }

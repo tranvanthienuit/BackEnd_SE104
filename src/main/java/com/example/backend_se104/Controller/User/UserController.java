@@ -20,11 +20,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = {"api/app"})
+@Transactional
 public class UserController {
     @Autowired
     UserService userService;
@@ -43,7 +44,7 @@ public class UserController {
     @Autowired
     OrderssDeSevice orderssDeSevice;
 
-    @PostMapping(value = {"update/profile"})
+    @PostMapping(value = {"/user/sua-thong-tin", "/admin/sua-thong-tin", "/seller/sua-thong-tin"})
     public ResponseEntity<User> editInfo(@RequestBody(required = false) User user) throws Exception {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user1 = userService.findUserByUserId(user.getUserId());
@@ -76,7 +77,7 @@ public class UserController {
         return new ResponseEntity<>(user1, HttpStatus.OK);
     }
 
-    @PostMapping(value = {"update/avatar"})
+    @PostMapping(value = {"/user/cap-nhat-anh", "/admin/cap-nhat-anh", "/seller/cap-nhat-anh"})
     public ResponseEntity<User> editImg(@RequestBody Map<String, Object> image) throws Exception {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
@@ -86,7 +87,7 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping(value = {"update/password"})
+    @PostMapping(value = {"/user/sua-mat-khau", "/admin/sua-mat-khau", "/seller/sua-mat-khau"})
     public ResponseEntity<?> editPassword(@RequestBody Map<String, Object> password) {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
@@ -108,7 +109,7 @@ public class UserController {
         return user.getImage().getBytes();
     }
 
-    @PostMapping(value = {"forget/password"})
+    @PostMapping(value = {"/quen-mat-khau"})
     public ResponseEntity<?> forgetPass(@RequestBody Map<String, Object> email) {
         String Email = email.get("email").toString();
         if (mailService.checkMail(Email)) {
@@ -130,7 +131,7 @@ public class UserController {
         return new ResponseEntity<>("không có mail nào trong tài khoản", HttpStatus.OK);
     }
 
-    @PostMapping(value = {"reset/password/{token}"})
+    @PostMapping(value = {"/cai-dat-mat-khau-moi/{token}"})
     public ResponseEntity<?> setPassword(@PathVariable("token") String token, @RequestBody Map<String, Object> emailAndPass) {
         if (jwtTokenProvider.validateToken(token)) {
             userService.setPassword(passwordEncoder.encode(emailAndPass.get("password").toString()), emailAndPass.get("email").toString());
@@ -139,7 +140,7 @@ public class UserController {
         return new ResponseEntity<>("error", HttpStatus.OK);
     }
 
-    @GetMapping(value = {"profile"})
+    @GetMapping(value = {"/xem-tai-khoan"})
     public ResponseEntity<User> getUser() throws Exception {
         userDetail userDetail = (userDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findUserByUserId(userDetail.getUserId());
@@ -149,14 +150,14 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("user/{email}")
+    @GetMapping("/tim-user/{email}")
     public ResponseEntity<?> getUserByEmail(@PathVariable(name = "email") String email) {
         if (email != null)
             return new ResponseEntity<>(userService.findUser(email), HttpStatus.OK);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping(value = {"order"})
+    @PostMapping(value = {"/user/timorderss"})
     public ResponseEntity<List<Orderss>> findOrderss(@RequestBody Map<String, Object> keysearch) {
         if (orderssSevice.findOrder(keysearch.get("keysearch").toString()).size() == 0) {
             return new ResponseEntity<>(HttpStatus.OK);
@@ -166,8 +167,8 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = {"order-detail/{id}"})
-    public ResponseEntity<?> findOrderDe(@PathVariable("id") String orderDeId) {
+    @PostMapping(value = {"/user/tim-Orderssde/{orderId}", "/user/tim-Orderssde"})
+    public ResponseEntity<?> findOrderDe(@PathVariable("orderId") String orderDeId) {
         if (orderDeId == null) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

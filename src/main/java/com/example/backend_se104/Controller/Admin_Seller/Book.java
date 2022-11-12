@@ -14,18 +14,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController
+@Transactional
 public class Book {
     @Autowired
     BookService booksService;
     @Autowired
     CategoryService categoryService;
 
-    @GetMapping(value = {"api/seller/page/{number}", "api/admin/page/{number}"})
+    @GetMapping(value = {"/seller/xem-tat-ca-sach/{page}", "/seller/xem-tat-ca-sach", "/admin/xem-tat-ca-sach/{page}", "/admin/xem-tat-ca-sach"})
     public ResponseEntity<BookList> getAllBook(
-            @PathVariable(name = "number", required = false) Integer page) throws Exception {
+            @PathVariable(name = "page", required = false) Integer page) throws Exception {
         BookList bookList = new BookList();
         if (page == null) {
             page = 0;

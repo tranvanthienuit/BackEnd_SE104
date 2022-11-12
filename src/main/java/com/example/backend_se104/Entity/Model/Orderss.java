@@ -44,7 +44,7 @@ public class Orderss {
     private String nameUser;
     @Column(name = "fullName")
     private String fullName;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "UserId")
     private User user;
     @OneToMany(mappedBy = "orderss", cascade = CascadeType.ALL)
