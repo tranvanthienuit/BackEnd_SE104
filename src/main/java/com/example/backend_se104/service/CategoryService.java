@@ -1,15 +1,18 @@
-package com.example.backend_se104.service;
+package spring.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import spring.Entity.Model.Category;
+import spring.Repository.CategoryRepository;
 
 import java.util.List;
 
 @Service
 public class CategoryService {
     @Autowired
-    spring.Repository.CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     public void saveCategory(Category category) {
         categoryRepository.save(category);
