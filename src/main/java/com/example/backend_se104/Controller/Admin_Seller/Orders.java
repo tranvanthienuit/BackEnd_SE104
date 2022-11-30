@@ -66,7 +66,7 @@ public class Orders {
         }
     }
 
-    @PostMapping(value = {"/seller/sua-orderss", "/admin/sua-orderss"})
+    @PostMapping(value = {"/seller/", "/admin/sua-orderss"})
     public ResponseEntity<?> editeStatus(@RequestBody Orderss orderss) {
         Orderss orderss1 = orderssSevice.findByOrderssId(orderss.getOrderssId());
         orderss1.setTelephone(orderss.getTelephone());
