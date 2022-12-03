@@ -1,6 +1,5 @@
 package com.example.backend_se104.Entity;
 
-
 import com.example.backend_se104.Entity.Model.OrderssDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;

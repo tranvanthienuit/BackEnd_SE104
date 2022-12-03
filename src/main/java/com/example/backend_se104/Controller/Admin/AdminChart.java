@@ -1,5 +1,6 @@
 package com.example.backend_se104.Controller.Admin;
 
+
 import com.example.backend_se104.Entity.*;
 import com.example.backend_se104.Service.OrderssDeSevice;
 import com.example.backend_se104.Service.OrderssSevice;
@@ -21,7 +22,7 @@ public class AdminChart {
     @Autowired
     UserService userService;
 
-    @GetMapping(value = "/api/admin/chart")
+    @GetMapping(value = "/admin/chart")
     public ResponseEntity<?> chart() {
         List<month_book> bookAndMonth = orderssSevice.getBookAndMonth();
         if (orderssSevice.getBookAndMonth() == null || orderssSevice.getBookAndMonth().isEmpty()) {

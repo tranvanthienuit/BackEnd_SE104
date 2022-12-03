@@ -39,7 +39,7 @@ public class UserCart {
     @Autowired
     RoleService roleService;
 
-    @PostMapping(value = {"api/user/buy"})
+    @PostMapping(value = {"/user/mua-sach", "/mua-sach"})
     public ResponseEntity<List<CartBook>> Orderss(@RequestBody Cart objectCart) throws Exception {
         List<CartBook> cart = objectCart.getCartBooks();
 
